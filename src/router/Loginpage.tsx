@@ -1,12 +1,37 @@
 import { useState } from "react";
 import Input from "./InputComp";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 //Login-Page Component
 export default function LoginPage() {
+  //create empty state for our userlist will be full after call api
+  const [users, SetUsers] = useState([
+    {
+      username: "",
+      password: "",
+    },
+  ]);
+  // navigate send user to home page 
+  const navigate = useNavigate();
   //save inputValues for eachtime our component rendered
   const [inputValue, setInputValue] = useState({
     phonNumber: "",
     password: "",
+  });
+  useEffect(() => {
+    let timer = setInterval(() => {
+      async function getUsers() {
+        return await (await fetch("https://farawin.iran.liara.run/api/user"))
+          .json()
+          .then((userList) => {
+            SetUsers(userList.userList);
+            console.log(users);
+          });
+      }
+      getUsers();
+    }, 1000);
+    return () => clearInterval(timer);
   });
   //handle phoneInput just get number
   const phoneInputHandle = (event: any) => {
@@ -41,12 +66,34 @@ export default function LoginPage() {
       return false;
     } else return true;
   };
-
+  // if the user has already registered will enter messenger page 
+  const handleSubmit = (event: any) => {
+    for (let i = 0; i < users.length; i++) {
+      if (
+        inputValue.phonNumber === users[i].username &&
+        inputValue.password === users[i].password
+      ) {
+        alert(inputValue.phonNumber + " " + users[i].username);
+        event.preventDefault();
+        navigate("/Home");
+        break;
+      } else if (
+        inputValue.phonNumber === users[i].username &&
+        inputValue.password !== users[i].password
+      ) {
+        alert("!Wrong Password");
+        break;
+      } else if (inputValue.phonNumber !== users[i].username) {
+        alert("!Wrong PhoneNumber");
+        break;
+      }
+    }
+  };
   return (
     <div className="bg-Onyx w-full h-screen  bg-cover ">
       {/** a container for our login form */}
       <div className="w-80 h-fit absolute text-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-Platinum p-5 ">
-        <form className="text-center">
+        <form onSubmit={handleSubmit} className="text-center">
           <h1 className="text-Platinum font-semibold text-xl">Login</h1>
           {/** input component made for better control our inputs value and control ui */}
           {/** props guide :

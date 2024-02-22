@@ -22,7 +22,7 @@ export default function GoToTheMessengerPage() {
               />
             </div>
           </Link>
-          <Link to="SingUp" className=" w-full">
+          <Link to="SignUp" className=" w-full">
             <div className="border-Platinum border-2 rounded-md h-16  order-1 w-full text-center text-Platinum flex flex-row relative mt-3">
               <p className="order-0  m-auto max-w-64">
                 dont have an account? Singup now...
