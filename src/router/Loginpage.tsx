@@ -5,33 +5,12 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 //Login-Page Component
 export default function LoginPage() {
-  //create empty state for our userlist will be full after call api
-  const [users, SetUsers] = useState([
-    {
-      username: "",
-      password: "",
-    },
-  ]);
-  // navigate send user to home page 
+  // navigate send user to home page
   const navigate = useNavigate();
   //save inputValues for eachtime our component rendered
   const [inputValue, setInputValue] = useState({
     phonNumber: "",
     password: "",
-  });
-  useEffect(() => {
-    let timer = setInterval(() => {
-      async function getUsers() {
-        return await (await fetch("https://farawin.iran.liara.run/api/user"))
-          .json()
-          .then((userList) => {
-            SetUsers(userList.userList);
-            console.log(users);
-          });
-      }
-      getUsers();
-    }, 1000);
-    return () => clearInterval(timer);
   });
   //handle phoneInput just get number
   const phoneInputHandle = (event: any) => {
@@ -66,28 +45,27 @@ export default function LoginPage() {
       return false;
     } else return true;
   };
-  // if the user has already registered will enter messenger page 
-  const handleSubmit = (event: any) => {
-    for (let i = 0; i < users.length; i++) {
-      if (
-        inputValue.phonNumber === users[i].username &&
-        inputValue.password === users[i].password
-      ) {
-        alert(inputValue.phonNumber + " " + users[i].username);
-        event.preventDefault();
-        navigate("/Home");
-        break;
-      } else if (
-        inputValue.phonNumber === users[i].username &&
-        inputValue.password !== users[i].password
-      ) {
-        alert("!Wrong Password");
-        break;
-      } else if (inputValue.phonNumber !== users[i].username) {
-        alert("!Wrong PhoneNumber");
-        break;
-      }
+  // if the user has already registered will enter messenger page
+  const handleSubmit = async (event: any) => {
+    let message = await (
+      await fetch("https://farawin.iran.liara.run/api/user/login", {
+        method: "POST",
+        body: JSON.stringify({
+          username: `${inputValue.phonNumber}`,
+          password: `${inputValue.password}`,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+    ).json();
+    if (message.code === "200") {
+      localStorage.setItem("token", `${message.token}`);
+      navigate("/Home");
+    } else {
+      window.location.reload();
     }
+    console.log(message);
   };
   return (
     <div className="bg-Onyx w-full h-screen  bg-cover ">
@@ -142,7 +120,9 @@ export default function LoginPage() {
           ></Input>
           {/** submit button will be enable when our from is valided  */}
           <input
-            type="submit"
+            onClick={handleSubmit}
+            type="button"
+            value={"Submit"}
             className={
               "w-full h-10 rounded-lg mt-10 text-Onyx" +
               (formIsValid()

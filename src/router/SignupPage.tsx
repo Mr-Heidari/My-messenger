@@ -86,9 +86,10 @@ export default function SignUpPage() {
       })
     ).json();
     if (message.message === "با موفقیت افزوده شد.") {
-      alert("nice");
+      event.preventDefault();
+      navigate("/Home");
     } else {
-      alert("notnice");
+      window.location.reload()
     }
   };
   return (
@@ -161,7 +162,7 @@ export default function SignUpPage() {
           {/** submit button will be enable when our from is valided  */}
           <input
           onClick={handleSubmit}
-            type="submit"
+            type="button"
             className={
               "w-full h-10 rounded-lg mt-6 text-Onyx" +
               (formIsValid()
