@@ -22,11 +22,11 @@ export default function Input(prop: any) {
       <span
         className={
           "text-xs text-bubble-gum absolute transition-opacity opacity-0 duration-300 bottom-4" +
-          prop.patternError +
+          prop.patternErrorVisibility +
           prop.errorOpacity
         }
       >
-        wrong pattern
+        {prop.patternError}
       </span>
       {/** we get user password or phoneNumber */}
       <input
@@ -90,7 +90,7 @@ export default function Input(prop: any) {
     </div>
   );
 }
-//ValidationParagraph is component for show some error with better ui and render diffrent html with some conditions
+//ValidationParagraph is component for show some error with better ui and render diffrent html with some condition
 function ValidationParagraph(prop: any) {
   if (prop.type === "password" && !prop.confirmedPassword) {
     return (

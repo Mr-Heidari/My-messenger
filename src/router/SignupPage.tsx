@@ -17,6 +17,7 @@ export default function SignUpPage() {
     phonNumber: "",
     password: "",
     confirmedPassword: "",
+    name: "",
   });
   useEffect(() => {
     let timer = setInterval(() => {
@@ -60,17 +61,25 @@ export default function SignUpPage() {
       confirmedPassword: event.target.value,
     });
   };
-  //check form Validation Conditions
+  const nameInputHandle = (event: any) => {
+    setInputValue({
+      ...inputValue,
+      name: event.target.value,
+    });
+  };
+  //check form Validation Conditions for control sumbit btn enable or disable
   const formIsValid = (): boolean | undefined => {
     if (
       /^09/.test(inputValue.phonNumber) &&
       inputValue.password.length > 8 &&
       inputValue.phonNumber.length > 10 &&
-      inputValue.password === inputValue.confirmedPassword
+      inputValue.password === inputValue.confirmedPassword &&
+      inputValue.name.length > 3
     ) {
       return false;
     } else return true;
   };
+  //send post method to api for register user
   let handleSubmit = async function (event: any) {
     let message = await (
       await fetch("https://farawin.iran.liara.run/api/user", {
@@ -78,7 +87,7 @@ export default function SignUpPage() {
         body: JSON.stringify({
           username: `${inputValue.phonNumber}`,
           password: `${inputValue.password}`,
-          name: "halaharch",
+          name: `${inputValue.name}`,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -89,14 +98,14 @@ export default function SignUpPage() {
       event.preventDefault();
       navigate("/Home");
     } else {
-      window.location.reload()
+      window.location.reload();
     }
   };
   return (
     <div className="bg-Onyx w-full h-screen  bg-cover ">
       {/** a container for our login form */}
       <div className="w-80 h-fit absolute text-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-Platinum p-5 ">
-        <form  className="text-center">
+        <form className="text-center">
           <h1 className="text-Platinum font-semibold text-xl">SignUp</h1>
           {/** input component made for better control our inputs value and control ui */}
           {/** props guide :
@@ -112,6 +121,26 @@ export default function SignUpPage() {
            * changeIcone : this is just for password type when user click on icone changeIcone and show new icone
            */}
           <Input
+            type="text"
+            maxLength={11}
+            minLenght={11}
+            labelText="name"
+            icone={"5115"}
+            changeIcone={""}
+            onChange={nameInputHandle}
+            value={inputValue.name}
+            patternError="morethan 3 char"
+            patternErrorVisibility=""
+            errorOpacity={
+              inputValue.name
+                ? inputValue.name.length > 3
+                  ? " opacity-0"
+                  : " opacity-100"
+                : " opacity-0"
+            }
+            labelAnimation={inputValue.name ? " -translate-y-7 " : ""}
+          ></Input>
+          <Input
             type="tel"
             maxLength={11}
             minLenght={11}
@@ -120,7 +149,8 @@ export default function SignUpPage() {
             changeIcone={""}
             onChange={phoneInputHandle}
             value={inputValue.phonNumber}
-            patternError=""
+            patternError="wrong pattern"
+            patternErrorVisibility=""
             errorOpacity={
               inputValue.phonNumber
                 ? /^09/.test(inputValue.phonNumber)
@@ -130,6 +160,7 @@ export default function SignUpPage() {
             }
             labelAnimation={inputValue.phonNumber ? " -translate-y-7 " : ""}
           ></Input>
+
           <Input
             type="password"
             passwordReapet={false}
@@ -140,7 +171,8 @@ export default function SignUpPage() {
             changeIcone={" bg-showImg"}
             onChange={passwrodInputHandle}
             value={inputValue.password}
-            patternError=" hidden"
+            patternError=""
+            patternErrorVisibility=" hidden"
             labelAnimation={inputValue.password ? " -translate-y-7 " : ""}
           ></Input>
           <Input
@@ -154,17 +186,19 @@ export default function SignUpPage() {
             changeIcone={" bg-showImg"}
             onChange={confirmedPasswordHandle}
             value={inputValue.confirmedPassword}
-            patternError=" hidden"
+            patternError=""
+            patternErrorVisibility=" hidden"
             labelAnimation={
               inputValue.confirmedPassword ? " -translate-y-7 " : ""
             }
           ></Input>
           {/** submit button will be enable when our from is valided  */}
           <input
-          onClick={handleSubmit}
+            onClick={handleSubmit}
             type="button"
+            value={"Submit"}
             className={
-              "w-full h-10 rounded-lg mt-6 text-Onyx" +
+              "w-full h-10 rounded-lg mt-8 text-Onyx" +
               (formIsValid()
                 ? " bg-Platinum opacity-20 "
                 : " bg-tahiti text-Onyx  cursor-pointer")
