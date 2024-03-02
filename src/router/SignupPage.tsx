@@ -19,6 +19,7 @@ export default function SignUpPage() {
     confirmedPassword: "",
     name: "",
   });
+  //get Available User
   useEffect(() => {
     let timer = setInterval(() => {
       async function getUsers() {
@@ -61,6 +62,7 @@ export default function SignUpPage() {
       confirmedPassword: event.target.value,
     });
   };
+  //get nameInputValues
   const nameInputHandle = (event: any) => {
     setInputValue({
       ...inputValue,
@@ -96,7 +98,7 @@ export default function SignUpPage() {
     ).json();
     if (message.message === "با موفقیت افزوده شد.") {
       event.preventDefault();
-      navigate("/Home");
+      navigate("/Login");
     } else {
       window.location.reload();
     }
@@ -116,6 +118,7 @@ export default function SignUpPage() {
            * onChange : send to our input onChange attribute
            * value :  send to our input value
            * patternError : send a text to a paragraph in our comp when phone pattern go wrong that show himSelf
+           * patternErrorVisibility : send a " " or " hidden" as prop to inputComp for error vidibility
            * errorOpacity : its another paragraph if phoneNumber dont start with 09 and show himself and hide when condition will be true
            * labelAnimation : our label need change position when user change values just send him up and
            * changeIcone : this is just for password type when user click on icone changeIcone and show new icone

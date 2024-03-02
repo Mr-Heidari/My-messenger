@@ -33,7 +33,7 @@ export default function LoginPage() {
       password: event.target.value,
     });
   };
-  
+
   //check form Validation Conditions
   const formIsValid = (): boolean | undefined => {
     if (
@@ -62,6 +62,7 @@ export default function LoginPage() {
     ).json();
     if (message.code === "200") {
       localStorage.setItem("token", `${message.token}`);
+      localStorage.setItem("username", `${message.user.username}`);
       navigate("/Home");
     } else {
       window.location.reload();
@@ -83,6 +84,7 @@ export default function LoginPage() {
            * onChange : send to our input onChange attribute
            * value :  send to our input value
            * patternError : send a text to a paragraph in our comp when phone pattern go wrong that show himSelf
+           * patternErrorVisibility : send a " " or " hidden" as prop to inputComp for error vidibility
            * errorOpacity : its another paragraph if phoneNumber dont start with 09 and show himself and hide when condition will be true
            * labelAnimation : our label need change position when user change values just send him up and
            * changeIcone : this is just for password type when user click on icone changeIcone and show new icone
@@ -96,7 +98,8 @@ export default function LoginPage() {
             changeIcone={""}
             onChange={phoneInputHandle}
             value={inputValue.phonNumber}
-            patternError=""
+            patternError="wrong pattern"
+            patternErrorVisibility=""
             errorOpacity={
               inputValue.phonNumber
                 ? /^09/.test(inputValue.phonNumber)
