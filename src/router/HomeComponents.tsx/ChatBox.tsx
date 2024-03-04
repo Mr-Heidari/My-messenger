@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 export default function ChatPlace(prop: any) {
-    const [chatInputValue, setChatInputValue] = useState("");
-    const chatInputHandle = (event: any) => {
-      setChatInputValue(event.target.value);
-    };
+  const [chatInputValue, setChatInputValue] = useState("");
+  const [currentTime, setCurrentTime] = useState("");
+  const chatInputHandle = (event: any) => {
+    setChatInputValue(event.target.value);
+  };
+  const [x, setX] = useState("");
   const [allchats, setAllChats] = useState([
     {
       date: "",
@@ -50,7 +52,7 @@ export default function ChatPlace(prop: any) {
     allchats.sort((a, b) => a.id - b.id);
   };
   useEffect(() => {
-    const interval = setInterval(chats, 100);
+    const interval = setInterval(chats, 50);
     return () => {
       clearInterval(interval);
     };
@@ -83,7 +85,7 @@ export default function ChatPlace(prop: any) {
           <span className="w-14 h-14 right-8 absolute top-1 pt-3 bg-purple2/50 text-Platinum/90 rounded-full text-center font-semibold text-xl">
             {prop.contactName[0]}
           </span>
-          <p className="text-Platinum/90 font-semibold absolute top-4 right-24">
+          <p className="text-Platinum/90 font-semibold absolute top-5 right-24">
             {prop.contactName}
           </p>
         </div>
@@ -103,9 +105,40 @@ export default function ChatPlace(prop: any) {
           >
             <div className="relative  order-0 ">
               <div className="relative   ">
+                <button
+                  className=" absolute right-2 bottom-0 bg-deleteIcone bg-no-repeat w-5 h-5 bg-contain"
+                  onClick={async() => {
+                    const sendMessage = async () => {
+                       await (
+                        await fetch("https://farawin.iran.liara.run/api/chat", {
+                          method: "DELETE",
+                          body: JSON.stringify({
+                            "id": x.id,
+                          }),
+                          headers: {
+                            "Content-Type": "application/json",
+                            authorization: `${localStorage.getItem("token")}`,
+                          },
+                        })
+                      ).json();
+                      console.log(x.id);
+                    };
+                    sendMessage()
+                  }}
+                >
+                </button>
+                <span className="text-Platinum/60 absolute text-sm ml-3 bottom-0 font-semibold">
+                  {x.date.slice(11, 16)}
+                </span>
                 <p
-                  className="text-wrap whitespace-normal max-w-2xl break-words rounded-2xl  text-left w-fit 
-                max-md:max-w-xs max-lg:max-w-md max-xl:max-w-lg min-w-20 pr-5 text-Platinum/90 p-4 bg-Platinum/10"
+                  className={
+                    "text-wrap whitespace-normal max-w-2xl break-words  text-left w-fit max-md:max-w-xs max-lg:max-w-md max-xl:max-w-lg min-w-20 pr-4 text-Platinum/90 pb-6 py-4 p-3  bg-Platinum/10 " +
+                    (x.receiver === prop.contactPhoneNumber
+                      ? " rounded-t-xl rounded-bl-xl "
+                      : x.sender === prop.contactPhoneNumber
+                      ? " rounded-b-xl rounded-tr-xl  "
+                      : " ")
+                  }
                 >
                   {x.sender === prop.contactPhoneNumber ? x.text : " "}
                   {x.receiver === prop.contactPhoneNumber ? x.text : "  "}
@@ -122,7 +155,12 @@ export default function ChatPlace(prop: any) {
             type="text"
             className="w-11/12  absolute pl-5 text-Platinum/90 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-Onyx h-10 rounded-xl outline-none border-none pr-16"
             onChange={() => {
-              chatInputHandle(event)
+              chatInputHandle(event);
+              const currentTime = new Date().toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+              setCurrentTime(currentTime);
             }}
             value={chatInputValue}
           />
@@ -130,8 +168,8 @@ export default function ChatPlace(prop: any) {
             className="absolute w-8 h-8 bg-sendIcone bg-contain right-16 top-1/2 -translate-y-1/2 "
             onClick={() => {
               if (chatInputValue) {
-                sendMessage()
-                setChatInputValue("")
+                sendMessage();
+                setChatInputValue("");
               }
             }}
           ></button>

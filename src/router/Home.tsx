@@ -4,10 +4,6 @@ import ContactListUi from "./ChatComponent.tsx";
 import AddContactForm from "./HomeComponents.tsx/AddContactForm.tsx";
 import SideBar from "./HomeComponents.tsx/LeftSideBar.tsx";
 export default function MessengerHomePage() {
-  const [chatInputValue, setChatInputValue] = useState("");
-  const chatInputHandle = (event: any) => {
-    setChatInputValue(event.target.value);
-  };
   //we have addContactForm so we need control him like pop up
   const [addContactVisiblity, setAddContactVisiblity] = useState(" hidden");
   //we have 3 tab chats, unread, and search for each tab we should render some contact
@@ -118,9 +114,6 @@ export default function MessengerHomePage() {
                 setCustomizeTabVisibility={setCustomizeTabVisibility}
                 editTabIndex={customizeTabVisibility.editTabIndex}
                 deleteTabVisibility={customizeTabVisibility.deleteTabVisibility}
-                chatInputHandle={chatInputHandle}
-                setChatValue={setChatInputValue}
-                chatValue={chatInputValue}
               ></ContactListUi>
             </div>
           </div>

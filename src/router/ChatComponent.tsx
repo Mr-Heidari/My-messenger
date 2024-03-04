@@ -36,18 +36,22 @@ export default function ContactListUi(prop: any) {
     ).json();
     setContactList(contacts.contactList);
   };
+  const getAndSearchContact=()=>{
+    getContact()
+    searchedContact()
+  }
   //refresh contactList Each 1000ms
   useEffect(() => {
-    const interval = setInterval(getContact, 300);
+    const interval = setInterval(getAndSearchContact, 300);
     return () => {
       clearInterval(interval);
     };
   });
   //refresh searchedList
-  useEffect(() => {
-    const x = setInterval(searchedContact, 300);
-    return () => clearInterval(x);
-  });
+  // useEffect(() => {
+  //   const x = setInterval(searchedContact, 300);
+  //   return () => clearInterval(x);
+  // });
   const getChats = async () => {
     let chats = await (
       await fetch("https://farawin.iran.liara.run/api/chat", {
@@ -82,22 +86,8 @@ export default function ContactListUi(prop: any) {
           <div className="w-2/5 max-lg:w-0 bg-Platinum/10 h-screen order-0 overflow-auto overflow-x-hidden">
             <div className="h-12"></div>
             {contactList.map((contact, index) => (
-              <div
-                key={contact.date}
-                onClick={() =>
-                  setContactInfo({
-                    name: contact.name,
-                    username: contact.username,
-                    index: index,
-                  })
-                }
-              >
-                <div
-                  className={
-                    "relative  mt-1 hover:bg-Platinum/20  cursor-pointer"
-                  }
-                >
-                  {/**this button open contactCustimizeTab it lookLike vertical3dot */}
+              <div key={contact.date}>
+                <div className="relative">
                   <button
                     className={
                       " absolute bg-dotIcone w-7 bg-no-repeat top-0 z-20 h-7 bg-contain bg-right text-left text-sm text-Platinum -right-1 "
@@ -109,16 +99,6 @@ export default function ContactListUi(prop: any) {
                       });
                     }}
                   ></button>
-                  {/**we need hide customize tab when click on other contact */}
-                  <div
-                    onClick={() =>
-                      prop.setCustomizeTabVisibility({
-                        deleteTabVisibility: " hidden",
-                        editTabIndex: 9.5,
-                      })
-                    }
-                    className="absolute  z-10 w-full h-20 transition-opacity opacity-100 "
-                  ></div>
                   <ContactCustomizer
                     editFormControl={prop.editFormControl}
                     username={contact.username}
@@ -129,20 +109,59 @@ export default function ContactListUi(prop: any) {
                     deleteTabVisibility={prop.deleteTabVisibility}
                     contactIndex={index}
                   ></ContactCustomizer>
-                  <div className=" bg-transparent rounded-lg flex flex-row w-full h-20">
-                    <div className="relative bg-purple2/50 w-16 h-16 order-0 mt-2 rounded-2xl ml-4">
-                      <p className="text-Platinum/90 absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 text-2xl m-auto font-semibold">
-                        {contact.name[0]}
-                      </p>
-                    </div>
-                    <div className=" bg-transparent w-3/4  h-16 order-1 mt-2 ml-2">
-                      <p className="mt-1 text-Platinum font-semibold text-left">
-                        {contact.name}
-                      </p>
-                      <p className=" overflow-hidden text-ellipsis text-nowrap mt-2 text-sm text-Platinum/70">
-                        last message : vakhe bia yare inja poole sabtenameto
-                        bede
-                      </p>
+                </div>
+                <div
+                  onClick={() =>
+                    setContactInfo({
+                      name: contact.name,
+                      username: contact.username,
+                      index: index,
+                    })
+                  }
+                >
+                  <div
+                    className={
+                      "relative  mt-1 hover:bg-Platinum/20  cursor-pointer"
+                    }
+                  >
+                    {/**this button open contactCustimizeTab it lookLike vertical3dot */}
+                    {/* <button
+                      className={
+                        " absolute bg-dotIcone w-7 bg-no-repeat top-0 z-20 h-7 bg-contain bg-right text-left text-sm text-Platinum -right-1 "
+                      }
+                      onClick={() => {
+                        prop.setCustomizeTabVisibility({
+                          ...prop.customizeTabVisibility,
+                          editTabIndex: index,
+                        });
+                      }}
+                    ></button> */}
+                    {/**we need hide customize tab when click on other contact */}
+                    <div
+                      onClick={() =>
+                        prop.setCustomizeTabVisibility({
+                          deleteTabVisibility: " hidden",
+                          editTabIndex: 9.5,
+                        })
+                      }
+                      className="absolute  z-10 w-full h-20 transition-opacity opacity-100 "
+                    ></div>
+
+                    <div className=" bg-transparent rounded-lg flex flex-row w-full h-20">
+                      <div className="relative bg-purple2/50 w-16 h-16 order-0 mt-2 rounded-2xl ml-4">
+                        <p className="text-Platinum/90 absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 text-2xl m-auto font-semibold">
+                          {contact.name[0]}
+                        </p>
+                      </div>
+                      <div className=" bg-transparent w-3/4  h-16 order-1 mt-2 ml-2">
+                        <p className="mt-1 text-Platinum font-semibold text-left">
+                          {contact.name}
+                        </p>
+                        <p className=" overflow-hidden text-ellipsis text-nowrap mt-2 text-sm text-Platinum/70">
+                          last message : vakhe bia yare inja poole sabtenameto
+                          bede
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -176,22 +195,8 @@ export default function ContactListUi(prop: any) {
           <div className="w-2/5 max-lg:w-0 bg-Platinum/10 h-screen order-0 overflow-auto overflow-x-hidden">
             <div className="h-12"></div>
             {filteredList.map((contact, index) => (
-              <div
-                key={contact.date}
-                onClick={() =>
-                  setContactInfo({
-                    name: contact.name,
-                    username: contact.username,
-                    index: index,
-                  })
-                }
-              >
-                <div
-                  className={
-                    "relative  mt-1 hover:bg-Platinum/20  cursor-pointer"
-                  }
-                >
-                  {/**this button open contactCustimizeTab it lookLike vertical3dot */}
+              <div key={contact.date}>
+                <div className="relative">
                   <button
                     className={
                       " absolute bg-dotIcone w-7 bg-no-repeat top-0 z-20 h-7 bg-contain bg-right text-left text-sm text-Platinum -right-1 "
@@ -203,16 +208,6 @@ export default function ContactListUi(prop: any) {
                       });
                     }}
                   ></button>
-                  {/**we need hide customize tab when click on other contact */}
-                  <div
-                    onClick={() =>
-                      prop.setCustomizeTabVisibility({
-                        deleteTabVisibility: " hidden",
-                        editTabIndex: 9.5,
-                      })
-                    }
-                    className="absolute  z-10 w-full h-20 transition-opacity opacity-100 "
-                  ></div>
                   <ContactCustomizer
                     editFormControl={prop.editFormControl}
                     username={contact.username}
@@ -223,20 +218,59 @@ export default function ContactListUi(prop: any) {
                     deleteTabVisibility={prop.deleteTabVisibility}
                     contactIndex={index}
                   ></ContactCustomizer>
-                  <div className=" bg-transparent rounded-lg flex flex-row w-full h-20">
-                    <div className="relative bg-purple2/50 w-16 h-16 order-0 mt-2 rounded-2xl ml-4">
-                      <p className="text-Platinum/90 absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 text-2xl m-auto font-semibold">
-                        {contact.name[0]}
-                      </p>
-                    </div>
-                    <div className=" bg-transparent w-3/4  h-16 order-1 mt-2 ml-2">
-                      <p className="mt-1 text-Platinum font-semibold text-left">
-                        {contact.name}
-                      </p>
-                      <p className=" overflow-hidden text-ellipsis text-nowrap mt-2 text-sm text-Platinum/70">
-                        last message : vakhe bia yare inja poole sabtenameto
-                        bede
-                      </p>
+                </div>
+                <div
+                  onClick={() =>
+                    setContactInfo({
+                      name: contact.name,
+                      username: contact.username,
+                      index: index,
+                    })
+                  }
+                >
+                  <div
+                    className={
+                      "relative  mt-1 hover:bg-Platinum/20  cursor-pointer"
+                    }
+                  >
+                    {/**this button open contactCustimizeTab it lookLike vertical3dot */}
+                    {/* <button
+                      className={
+                        " absolute bg-dotIcone w-7 bg-no-repeat top-0 z-20 h-7 bg-contain bg-right text-left text-sm text-Platinum -right-1 "
+                      }
+                      onClick={() => {
+                        prop.setCustomizeTabVisibility({
+                          ...prop.customizeTabVisibility,
+                          editTabIndex: index,
+                        });
+                      }}
+                    ></button> */}
+                    {/**we need hide customize tab when click on other contact */}
+                    <div
+                      onClick={() =>
+                        prop.setCustomizeTabVisibility({
+                          deleteTabVisibility: " hidden",
+                          editTabIndex: 9.5,
+                        })
+                      }
+                      className="absolute  z-10 w-full h-20 transition-opacity opacity-100 "
+                    ></div>
+
+                    <div className=" bg-transparent rounded-lg flex flex-row w-full h-20">
+                      <div className="relative bg-purple2/50 w-16 h-16 order-0 mt-2 rounded-2xl ml-4">
+                        <p className="text-Platinum/90 absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 text-2xl m-auto font-semibold">
+                          {contact.name[0]}
+                        </p>
+                      </div>
+                      <div className=" bg-transparent w-3/4  h-16 order-1 mt-2 ml-2">
+                        <p className="mt-1 text-Platinum font-semibold text-left">
+                          {contact.name}
+                        </p>
+                        <p className=" overflow-hidden text-ellipsis text-nowrap mt-2 text-sm text-Platinum/70">
+                          last message : vakhe bia yare inja poole sabtenameto
+                          bede
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -247,11 +281,14 @@ export default function ContactListUi(prop: any) {
             {contactList.map((contact, index) => (
               <div key={contact.date}>
                 <ChatPlace
+                  reciver={chats}
+                  contactPhoneNumber={contact.username}
                   contactIndex={contactInfo.index}
                   index={index}
                   contactName={contactInfo.name}
                   chatInputHandle={prop.chatInputHandle}
                   chatValue={prop.chatValue}
+                  setChatValue={prop.setChatValue}
                 ></ChatPlace>
               </div>
             ))}
