@@ -7,7 +7,7 @@ export default function SideBar(prop: any) {
         <Menu showMenu={prop.showMenu} hideMenu={prop.menuVisibility}></Menu>
         <div className="w-20 h-fit order-0">
           <button
-            className="w-20 h-20 pt-6 text-xs bg-menuIcone text-Platinum text-center bg-auto bg-origin-padding bg-[center_top_0.7rem] bg-no-repeat hover:bg-Platinum/20 focus:bg-Platinum/10 mx-auto"
+            className={"w-20 h-20 pt-6 text-xs bg-menuIcone text-Platinum text-center bg-auto bg-origin-padding bg-[center_top_0.7rem] bg-no-repeat hover:bg-Platinum/20 focus:bg-Platinum/10 mx-auto"+(prop.chatListShow ? " max-lg:w-16  " : " max-lg:hidden")}
             onClick={() => {
               prop.menuVisibility()
               prop.setCustomizeTabVisibility({
@@ -28,7 +28,7 @@ export default function SideBar(prop: any) {
                 ? " bg-Platinum/10"
                 : prop.selectedTab === "menu"
                 ? "  bg-Platinum/10"
-                : "")
+                : "") +(prop.chatListShow ? " max-lg:w-16  " : " max-lg:hidden")
             }
             onClick={() => {
               prop.setSelectedTab("unread");
@@ -50,7 +50,7 @@ export default function SideBar(prop: any) {
                 ? " bg-Platinum/10"
                 : prop.selectedTab === "menu"
                 ? "  bg-Platinum/10"
-                : "")
+                : "")+(prop.chatListShow ? " max-lg:w-16  " : " max-lg:hidden")
             }
             onClick={() => {
               prop.setSelectedTab("chats");
@@ -66,7 +66,7 @@ export default function SideBar(prop: any) {
         {/**addContactForm */}
         <div className="w-20 h-fit order-3">
           <button
-            className="w-20 h-20 pt-6 text-xs bg-addContactIcone text-Platinum text-center bg-auto bg-origin-padding bg-[center_top_0.7rem] bg-no-repeat hover:bg-Platinum/20 focus:bg-Platinum/10 mx-auto"
+            className={"w-20 h-20 pt-6 text-xs bg-addContactIcone text-Platinum text-center bg-auto bg-origin-padding bg-[center_top_0.7rem] bg-no-repeat hover:bg-Platinum/20 focus:bg-Platinum/10 mx-auto"+(prop.chatListShow ? " max-lg:w-16  " : " max-lg:hidden")}
             onClick={() => {
               prop.setCustomizeTabVisibility({
                 editTabIndex: 9.5,

@@ -8,7 +8,7 @@ import GoToTheMessengerPage from "./router/GoToTheMessengerPage";
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
+      <Routes >
         <Route path="/" element={<GoToTheMessengerPage />} />
         <Route path="Login" element={<LoginPage />} />
         <Route path="SignUp" element={<SignUpPage />} />

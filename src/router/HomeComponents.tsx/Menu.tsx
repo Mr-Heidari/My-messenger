@@ -3,7 +3,7 @@ export default function Menu(prop: any) {
       <div
         onClick={prop.hideMenu}
         className={
-          "absolute w-full h-screen bg-Onyx/40 z-30" +
+          "absolute w-full h-screen bg-Onyx/40 z-40" +
           (prop.showMenu ? "" : " hidden")
         }
       >

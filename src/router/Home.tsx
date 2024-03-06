@@ -4,6 +4,7 @@ import ContactListUi from "./ChatComponent.tsx";
 import AddContactForm from "./HomeComponents.tsx/AddContactForm.tsx";
 import SideBar from "./HomeComponents.tsx/LeftSideBar.tsx";
 export default function MessengerHomePage() {
+  const [chatListShow, setChatListShow] = useState(false);
   //we have addContactForm so we need control him like pop up
   const [addContactVisiblity, setAddContactVisiblity] = useState(" hidden");
   //we have 3 tab chats, unread, and search for each tab we should render some contact
@@ -59,7 +60,12 @@ export default function MessengerHomePage() {
         ></EditForm>
         <div className=" flex flex-row w-full h-full ">
           {/**sidebar for user typess**/}
-          <div className="w-20  bg-Onyx h-full order-0">
+          <div
+            className={
+              "w-20  bg-Onyx h-full order-0" +
+              (chatListShow ? " max-lg:w-16" : " max-lg:hidden")
+            }
+          >
             {/**SideBar Comp guide:
              * showAddForm:this prop is function for contorl visibility of addContactForm by addContactBtn
              * customizeTabVisibility:this prop is about customize each contact
@@ -77,16 +83,17 @@ export default function MessengerHomePage() {
               showMenu={menuShow}
               selectedTab={selectedTab}
               setSelectedTab={setSelectedTab}
+              chatListShow={chatListShow}
             ></SideBar>
           </div>
           {/**message side*/}
-          <div className="order-1 w-full overflow-hidden ">
+          <div className="order-1 w-full  overflow-hidden">
             {/** search */}
-            <div className="relative bg-Onyx  w-2/5 z-30">
-              <div className="left-3 bg-Platinum/10 w-4/6 absolute ">
+            <div className={"relative box-border bg-Onyx  z-30 "}>
+              <div className={"left-2 bg-Platinum/10 box-border w-full relative "}>
                 <input
                   type="text"
-                  className="w-full h-10 absolute left-1/2 -translate-x-1/2 mt-2  bg-Onyx rounded-2xl outline-none border-none text-Platinum pl-5"
+                  className={"w-[38%] h-10 absolute max-w-[430px]  mt-2 bg-Onyx rounded-2xl  outline-none border-none text-Platinum pl-5"+(chatListShow ? " max-lg:w-80 max-[376px]:w-[270px] max-lg:max-w-[300px]  " : " max-lg:hidden")}
                   placeholder="Search"
                   onFocus={() => {
                     setSelectedTab("search");
@@ -114,6 +121,8 @@ export default function MessengerHomePage() {
                 setCustomizeTabVisibility={setCustomizeTabVisibility}
                 editTabIndex={customizeTabVisibility.editTabIndex}
                 deleteTabVisibility={customizeTabVisibility.deleteTabVisibility}
+                chatListShow={chatListShow}
+                setChatListShow={setChatListShow}
               ></ContactListUi>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ChatPlace from "./HomeComponents.tsx/ChatBox";
 export default function ContactListUi(prop: any) {
+  const [chatlistShow, setCHatListShow] = useState(" max-lg:hidden");
   const [chats, setChats] = useState([{}]);
   //save contactList by apiCall
   const [contactList, setContactList] = useState([
@@ -36,10 +37,10 @@ export default function ContactListUi(prop: any) {
     ).json();
     setContactList(contacts.contactList);
   };
-  const getAndSearchContact=()=>{
-    getContact()
-    searchedContact()
-  }
+  const getAndSearchContact = () => {
+    getContact();
+    searchedContact();
+  };
   //refresh contactList Each 1000ms
   useEffect(() => {
     const interval = setInterval(getAndSearchContact, 300);
@@ -47,11 +48,6 @@ export default function ContactListUi(prop: any) {
       clearInterval(interval);
     };
   });
-  //refresh searchedList
-  // useEffect(() => {
-  //   const x = setInterval(searchedContact, 300);
-  //   return () => clearInterval(x);
-  // });
   const getChats = async () => {
     let chats = await (
       await fetch("https://farawin.iran.liara.run/api/chat", {
@@ -83,7 +79,12 @@ export default function ContactListUi(prop: any) {
       <>
         <div className="w-full h-screen bg-transparent flex flex-row">
           {/** a container for contactList */}
-          <div className="w-2/5 max-lg:w-0 bg-Platinum/10 h-screen order-0 overflow-auto overflow-x-hidden">
+          <div
+            className={
+              "w-2/5 bg-Platinum/10 h-screen order-0 overflow-auto overflow-x-hidden max-w-md " +
+              (prop.chatListShow ? " max-lg:w-80" : " max-lg:hidden")
+            }
+          >
             <div className="h-12"></div>
             {contactList.map((contact, index) => (
               <div key={contact.date}>
@@ -111,31 +112,20 @@ export default function ContactListUi(prop: any) {
                   ></ContactCustomizer>
                 </div>
                 <div
-                  onClick={() =>
+                  onClick={() => {
                     setContactInfo({
                       name: contact.name,
                       username: contact.username,
                       index: index,
-                    })
-                  }
+                    });
+                    prop.setChatListShow(false);
+                  }}
                 >
                   <div
                     className={
                       "relative  mt-1 hover:bg-Platinum/20  cursor-pointer"
                     }
                   >
-                    {/**this button open contactCustimizeTab it lookLike vertical3dot */}
-                    {/* <button
-                      className={
-                        " absolute bg-dotIcone w-7 bg-no-repeat top-0 z-20 h-7 bg-contain bg-right text-left text-sm text-Platinum -right-1 "
-                      }
-                      onClick={() => {
-                        prop.setCustomizeTabVisibility({
-                          ...prop.customizeTabVisibility,
-                          editTabIndex: index,
-                        });
-                      }}
-                    ></button> */}
                     {/**we need hide customize tab when click on other contact */}
                     <div
                       onClick={() =>
@@ -168,7 +158,21 @@ export default function ContactListUi(prop: any) {
               </div>
             ))}
           </div>
-          <div className="order-1 w-full h-screen">
+          <button
+            className={
+              "absolute z-30 lg:opacity-0 opacity-100 w-10 h-10 bg-backArrowIcone hover:bg-red bg-contain left-10 top-3" +
+              (!prop.chatListShow ? " " : " hidden")
+            }
+            onClick={() => {
+              prop.setChatListShow(true);
+            }}
+          ></button>
+          <div
+            className={
+              "order-1 w-full  h-screen" +
+              (!prop.chatListShow ? " " : " hidden")
+            }
+          >
             {contactList.map((contact, index) => (
               <div key={contact.date}>
                 <ChatPlace
@@ -192,7 +196,12 @@ export default function ContactListUi(prop: any) {
       <>
         <div className="w-full h-screen bg-transparent flex flex-row">
           {/** a container for contactList */}
-          <div className="w-2/5 max-lg:w-0 bg-Platinum/10 h-screen order-0 overflow-auto overflow-x-hidden">
+          <div
+            className={
+              "w-2/5   bg-Platinum/10 h-screen order-0 overflow-auto overflow-x-hidden max-w-md " +
+              (prop.chatListShow ? " max-lg:w-80" : " max-lg:hidden")
+            }
+          >
             <div className="h-12"></div>
             {filteredList.map((contact, index) => (
               <div key={contact.date}>
@@ -220,31 +229,20 @@ export default function ContactListUi(prop: any) {
                   ></ContactCustomizer>
                 </div>
                 <div
-                  onClick={() =>
+                  onClick={() => {
                     setContactInfo({
                       name: contact.name,
                       username: contact.username,
                       index: index,
-                    })
-                  }
+                    });
+                    prop.setChatListShow(false);
+                  }}
                 >
                   <div
                     className={
                       "relative  mt-1 hover:bg-Platinum/20  cursor-pointer"
                     }
                   >
-                    {/**this button open contactCustimizeTab it lookLike vertical3dot */}
-                    {/* <button
-                      className={
-                        " absolute bg-dotIcone w-7 bg-no-repeat top-0 z-20 h-7 bg-contain bg-right text-left text-sm text-Platinum -right-1 "
-                      }
-                      onClick={() => {
-                        prop.setCustomizeTabVisibility({
-                          ...prop.customizeTabVisibility,
-                          editTabIndex: index,
-                        });
-                      }}
-                    ></button> */}
                     {/**we need hide customize tab when click on other contact */}
                     <div
                       onClick={() =>
@@ -277,7 +275,21 @@ export default function ContactListUi(prop: any) {
               </div>
             ))}
           </div>
-          <div className="order-1 w-full h-screen">
+          <button
+            className={
+              "absolute z-30 lg:opacity-0 opacity-100 w-10 h-10 bg-backArrowIcone hover:bg-red bg-contain left-10 top-3" +
+              (!prop.chatListShow ? " " : " hidden")
+            }
+            onClick={() => {
+              prop.setChatListShow(true);
+            }}
+          ></button>
+          <div
+            className={
+              "order-1 w-full  h-screen" +
+              (!prop.chatListShow ? " " : " hidden")
+            }
+          >
             {contactList.map((contact, index) => (
               <div key={contact.date}>
                 <ChatPlace
