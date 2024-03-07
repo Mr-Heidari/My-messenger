@@ -59,7 +59,7 @@ export default function Input(prop: any) {
             ? prop.value.length > 10
               ? " opacity-0"
               : " opacity-100"
-            : prop.value.length > 7
+            : prop.value.length > 8
             ? /[a-z]/.test(prop.value) && /[A-Z]/.test(prop.value)
               ? " opacity-0"
               : " opacity-100"

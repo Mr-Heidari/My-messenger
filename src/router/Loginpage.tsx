@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Input from "./InputComp";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 //Login-Page Component
 export default function LoginPage() {
@@ -47,7 +46,7 @@ export default function LoginPage() {
     } else return true;
   };
   // if the user has already registered will enter messenger page
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async () => {
     let message = await (
       await fetch("https://farawin.iran.liara.run/api/user/login", {
         method: "POST",
@@ -63,6 +62,7 @@ export default function LoginPage() {
     if (message.code === "200") {
       localStorage.setItem("token", `${message.token}`);
       localStorage.setItem("username", `${message.user.username}`);
+      localStorage.setItem("name", `${message.user.name}`);
       navigate("/Home");
     } else {
       window.location.reload();

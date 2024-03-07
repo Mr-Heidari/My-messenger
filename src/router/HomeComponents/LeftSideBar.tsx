@@ -23,20 +23,10 @@ export default function SideBar(prop: any) {
         <div className="w-20 h-fit order-1">
           <button
             className={
-              "w-20 h-20 pt-6 text-xs bg-unreadIcone text-Platinum text-center bg-auto bg-origin-padding bg-[center_top_0.7rem] bg-no-repeat hover:bg-Platinum/20 focus:bg-Platinum/10 mx-auto" +
-              (prop.selectedTab === "unread"
-                ? " bg-Platinum/10"
-                : prop.selectedTab === "menu"
-                ? "  bg-Platinum/10"
-                : "") +(prop.chatListShow ? " max-lg:w-16  " : " max-lg:hidden")
+              "w-20 h-20 pt-6 text-xs bg-unreadIcone text-Platinum text-center bg-auto bg-origin-padding bg-[center_top_0.7rem] bg-no-repeat hover:bg-Platinum/20  mx-auto" 
+              
             }
-            onClick={() => {
-              prop.setSelectedTab("unread");
-              prop.setCustomizeTabVisibility({
-                editTabIndex: 9.5,
-                deleteTabVisibility: " hidden",
-              });
-            }}
+            
           >
             unread
           </button>

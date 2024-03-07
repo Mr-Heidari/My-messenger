@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
-import EditForm from "./HomeComponents.tsx/editForm.tsx";
-import ContactListUi from "./ChatComponent.tsx";
-import AddContactForm from "./HomeComponents.tsx/AddContactForm.tsx";
-import SideBar from "./HomeComponents.tsx/LeftSideBar.tsx";
+import {  useState } from "react";
+import EditForm from "./HomeComponents/editForm.tsx";
+import ContactListUi from "./HomeComponents/ChatComponent.tsx";
+import AddContactForm from "./HomeComponents/AddContactForm.tsx";
+import SideBar from "./HomeComponents/LeftSideBar.tsx";
 export default function MessengerHomePage() {
-  const [chatListShow, setChatListShow] = useState(false);
+  const [chatListShow, setChatListShow] = useState(true);
   //we have addContactForm so we need control him like pop up
   const [addContactVisiblity, setAddContactVisiblity] = useState(" hidden");
   //we have 3 tab chats, unread, and search for each tab we should render some contact
   const [selectedTab, setSelectedTab] = useState("chats");
   //menu visibility Control
   const [menuShow, setMenuShow] = useState(false);
-  //this is a function for sending to child element by props
+  //this is a function for sending to child element by props and control some ui
   const [editFormControl, setEditFormControl] = useState({
     phoneNumber: "",
     name: "",
@@ -42,7 +42,6 @@ export default function MessengerHomePage() {
       setAddContactVisiblity(" ");
     }
   };
-
   return (
     <>
       <div className="bg-Onyx w-full h-screen ">
@@ -90,10 +89,17 @@ export default function MessengerHomePage() {
           <div className="order-1 w-full  overflow-hidden">
             {/** search */}
             <div className={"relative box-border bg-Onyx  z-30 "}>
-              <div className={"left-2 bg-Platinum/10 box-border w-full relative "}>
+              <div
+                className={"left-2 bg-Platinum/10 box-border w-full relative "}
+              >
                 <input
                   type="text"
-                  className={"w-[38%] h-10 absolute max-w-[430px]  mt-2 bg-Onyx rounded-2xl  outline-none border-none text-Platinum pl-5"+(chatListShow ? " max-lg:w-80 max-[376px]:w-[270px] max-lg:max-w-[300px]  " : " max-lg:hidden")}
+                  className={
+                    "w-[38%] h-10 absolute max-w-[430px]  mt-2 bg-Onyx rounded-2xl  outline-none border-none text-Platinum pl-5" +
+                    (chatListShow
+                      ? " max-lg:w-80 max-[376px]:w-[270px] max-lg:max-w-[300px] "
+                      : " lg:w-[28%] min-w-[300px]  max-lg:hidden")
+                  }
                   placeholder="Search"
                   onFocus={() => {
                     setSelectedTab("search");
