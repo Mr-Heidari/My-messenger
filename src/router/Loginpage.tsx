@@ -124,7 +124,9 @@ export default function LoginPage() {
           ></Input>
           {/** submit button will be enable when our from is valided  */}
           <input
-            onClick={handleSubmit}
+            onClick={async () => {
+              handleSubmit();
+            }}
             type="button"
             value={"Submit"}
             className={
